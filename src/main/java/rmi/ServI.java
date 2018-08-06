@@ -44,9 +44,20 @@ public interface ServI extends Remote {
      * @param user
      * @param passowrd
      * @param client
+     * @param point
+     * @throws RemoteException
+     */
+    public void setScore(String user, String passowrd, ClientI client, int point) throws RemoteException;
+
+    /**
+     *
+     * @param user
+     * @param password
+     * @param client
      * @return
      * @throws RemoteException
      */
-    public String setScore(String user, String passowrd, ClientI client) throws RemoteException;
+    public String getScore(String user, String password, ClientI client) throws RemoteException;
+    
       
 }

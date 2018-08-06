@@ -72,7 +72,7 @@ public class ServImpl extends UnicastRemoteObject implements ServI  {
     }
 
     @Override
-    public String setScore(String user, String password, ClientI client) throws RemoteException {
+    public void setScore(String user, String password, ClientI client, int point) throws RemoteException {
         
         if (clients.contains(client)){
             try {
@@ -80,19 +80,39 @@ public class ServImpl extends UnicastRemoteObject implements ServI  {
             } catch (NotBoundException | MalformedURLException ex) {
                 Logger.getLogger(ServImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
-            ba.setEkstraFelt(user, password, "score", 244);
+            ba.setEkstraFelt(user, password, "score", point);
+                
+            Object score = ba.getEkstraFelt(user, password, "score");
+            String returnScore = "score: " + score;
+            System.out.println(returnScore);
+            
+        }
+        else {
+            System.out.println("Not a valid client");
+        }
+        
+    }
+
+    @Override
+    public String getScore(String user, String password, ClientI client) throws RemoteException {
+        if (clients.contains(client)){
+            try {
+                ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+            } catch (NotBoundException | MalformedURLException ex) {
+                Logger.getLogger(ServImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 
             Object score = ba.getEkstraFelt(user, password, "score");
             String returnScore = "score: " + score;
             System.out.println(returnScore);
             
             return returnScore;
+            
         }
         else {
-            System.out.println("Not a valid client");
+            System.out.println("client does not exist");
             return "client does not exist";
         }
-        
     }
 
 }

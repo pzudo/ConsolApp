@@ -26,6 +26,8 @@ public class Client {
         
         String user = "s145005";
         String password = "s145005";
+        int point = 3;
+        
         ClientI client = new ClientImpl();
         
         ServI serv = (ServI) Naming.lookup("rmi://localhost:3097/RmiServer");
@@ -33,7 +35,9 @@ public class Client {
         System.out.println(serv.register(user, password, client));
         
         System.out.println(client);
-        System.out.println(serv.setScore(user, password, client));
+        
+        serv.setScore(user, password, client, point);
+        System.out.println(serv.getScore(user, password, client));
         
     }
     
