@@ -5,12 +5,13 @@
  */
 package rmi.implementions;
 
-import rmi.implementions.AdminClientImplementation;
 import rmi.interfaces.HangmanClientInterface;
 import rmi.interfaces.ClientInterface;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.data.Diverse;
 import brugerautorisation.transport.rmi.Brugeradmin;
+import hangman.Gamelogic;
+import static java.lang.System.exit;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.User;
+import rmi.Highscore;
 
 /**
  *
@@ -29,17 +30,17 @@ import rmi.User;
 public class HangmanClientImplementation extends UnicastRemoteObject implements HangmanClientInterface {
 
     private final List<ClientInterface> clients = new ArrayList<>();
-    private final List<User> users = new ArrayList<>();
-    private final List<String> words = new ArrayList<>();
+    private final List<Highscore> highscore = new ArrayList<>();
     Brugeradmin ba;
     Bruger b;
 
     public HangmanClientImplementation() throws RemoteException {
         super();
     }
-       
+
     @Override
     public String handshake() throws RemoteException {
+
         return "handshake";
     }
 
@@ -61,13 +62,13 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
             clients.add(client);
             Object score = ba.getEkstraFelt(username, password, "score");
             String scoreString = score.toString();
-            User user = new User(username, scoreString);
-            users.add(user);
-            System.out.print("registered client " + client);
+            Highscore user = new Highscore(username, scoreString);
+            highscore.add(user);
+            System.out.println("registered client " + client);
         }
-        
+
         doCallback(client);
-        
+
     }
 
     @Override
@@ -78,10 +79,52 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
             System.err.println("client does not exist");
         }
     }
-    
-    public void doCallback(ClientInterface client) throws RemoteException{
-        System.out.println("request input from client");
-        System.out.println(client.input());
-    }
 
+    public void doCallback(ClientInterface client) throws RemoteException {
+
+        Gamelogic game = new Gamelogic();
+       
+        client.callback("\nNEW GAME");
+        game.reset();
+        System.out.println("word is: " + game.getWord());
+        
+        int round = 0;
+        
+        while (!game.isGameover()) {
+            round = round + 1;
+            client.callback("\n--------- round " + round + " ---------");
+            client.callback("Your nummer of wrongs is: " + game.getWrongs());
+            client.callback("The current visible word is: " + game.getVisible());
+            client.callback("Used letters: " + game.getUsedLetters());
+            
+            String letter = client.input("Guess a letter: ");
+            game.check(letter);
+            
+            if(game.isCorrect()){
+                client.callback(letter + " Was correct");
+                client.callback("--------- round " + round + " ---------");
+            }
+            else {
+                client.callback(letter + " Ss not in the word try again");
+                client.callback("--------- round " + round + " ---------");
+            }
+
+            if (game.isGameover()){
+                if(game.isWon()){
+                    client.callback("GRATZ YOU WON");
+                }
+                else{
+                    client.callback("YOU LOST BETTER LUCK NEXT TIME");
+                }
+            }
+        }
+        
+        String choice = client.input("\nDo you want to play a new game (y/n)");
+        if("y".equals(choice)){
+            doCallback(client);
+        }
+        else {
+            client.callback("\nGoodbye");
+        }
+    }
 }

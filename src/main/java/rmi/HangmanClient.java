@@ -11,14 +11,12 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-import static rmi.AdminClient.input;
 import rmi.implementions.ClientImplementation;
-import rmi.interfaces.AdminClientInterface;
 import rmi.interfaces.ClientInterface;
 import rmi.interfaces.HangmanClientInterface;
 
 /**
- *
+ * This is the client for playing hangman in console
  * @author s145005
  */
 public class HangmanClient {
@@ -29,7 +27,7 @@ public class HangmanClient {
     static String password;
 
     static ClientInterface client;
-    static HangmanClientInterface serv;
+    static HangmanClientInterface hang;
     
     /**
      * @param args the command line arguments
@@ -41,19 +39,20 @@ public class HangmanClient {
         input = new Scanner(System.in);
 
         client = new ClientImplementation();
-        serv = (HangmanClientInterface) Naming.lookup("rmi://localhost:3097/hangman");
+        hang = (HangmanClientInterface) Naming.lookup("rmi://localhost:3097/hangman");
 
+        System.out.println("-------------------- login --------------------");
         System.out.println("type username then enter");
         user = input.nextLine();
         System.out.println("type password then enter");
         password = input.nextLine();
 
         try {
-            serv.register(user, password, client);
+            hang.register(user, password, client);
         } catch (RemoteException e) {
             System.err.println(e);
         } finally {
-            serv.unregister(client);
+            hang.unregister(client);
             input.close();
             exit(0);
         }

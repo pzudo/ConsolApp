@@ -9,13 +9,13 @@ package rmi;
  *
  * @author s145005
  */
-public class User {
+public class Highscore {
     String username;
 //    String password;
     String score;
 //    ClientI client;
 
-    public User(String username, String score) {
+    public Highscore(String username, String score) {
         this.username = username;
         this.score = score;
     }

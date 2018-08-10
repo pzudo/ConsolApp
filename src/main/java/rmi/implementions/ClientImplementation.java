@@ -16,6 +16,8 @@ import java.util.Scanner;
  */
 public class ClientImplementation extends UnicastRemoteObject implements ClientInterface {
 
+    Scanner input = new Scanner(System.in);;
+    
     public ClientImplementation() throws RemoteException {
         super();
     }
@@ -28,9 +30,8 @@ public class ClientImplementation extends UnicastRemoteObject implements ClientI
     }
 
     @Override
-    public String input() throws RemoteException {
-        Scanner input = new Scanner(System.in);
-        System.out.println("test input request");
+    public String input(String request) throws RemoteException {
+        System.out.println(request);
         String response = input.nextLine();
         return response;
     }

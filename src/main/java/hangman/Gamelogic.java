@@ -67,7 +67,6 @@ public class Gamelogic {
         words.add("solsort");
         words.add("seksten");
         words.add("sytten");
-        reset();
     }
 
     public void reset() {

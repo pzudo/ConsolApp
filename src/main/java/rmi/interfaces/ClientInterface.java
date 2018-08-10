@@ -28,6 +28,6 @@ public interface ClientInterface extends Remote {
      * @return
      * @throws RemoteException
      */
-    public String input() throws RemoteException;
+    public String input(String request) throws RemoteException;
     
 }

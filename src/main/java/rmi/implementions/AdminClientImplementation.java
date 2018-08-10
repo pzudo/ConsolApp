@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.User;
+import rmi.Highscore;
 
 /**
  *
@@ -34,7 +34,7 @@ import rmi.User;
 public class AdminClientImplementation extends UnicastRemoteObject implements AdminClientInterface {
 
     private final List<ClientInterface> admins = new ArrayList<>();
-    private final List<User> users = new ArrayList<>();
+    private final List<Highscore> users = new ArrayList<>();
     private final List<String> words = new ArrayList<>();
     Brugeradmin ba;
     Bruger b;
@@ -67,7 +67,7 @@ public class AdminClientImplementation extends UnicastRemoteObject implements Ad
             admins.add(client);
             Object score = ba.getEkstraFelt(username, password, "score");
             String scoreString = score.toString();
-            User user = new User(username, scoreString);
+            Highscore user = new Highscore(username, scoreString);
             users.add(user);
             System.out.print("registered client " + client);
         }
