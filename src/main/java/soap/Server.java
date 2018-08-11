@@ -17,7 +17,7 @@ public class Server {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        RemoteI r = new RemoteImpl();
+        GamedataInterface r = new GamedataImplementation();
         
         System.out.println("publishing");
         Endpoint.publish("http://[::]:9092/soap", r);

@@ -5,7 +5,6 @@
  */
 package rmi.interfaces;
 
-import rmi.interfaces.ClientInterface;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -24,10 +23,8 @@ public interface HangmanClientInterface extends Remote {
     /**
      * registering clients used in callback and user validation
      * @param username
-     * @param user
      * @param password
      * @param client
-     * @return String with registration status
      * @throws RemoteException
      */
     public void register(String username, String password, ClientInterface client) throws RemoteException;

@@ -7,6 +7,7 @@ package soap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
@@ -22,11 +23,18 @@ public class Client {
      */
     public static void main(String[] args) throws MalformedURLException {
         URL url = new URL("http://localhost:9092/soap?wsdl");
-        QName qname = new QName("http://soap/", "RemoteImplService");
+        QName qname = new QName("http://soap/", "GamedataImplementationService");
         Service service = Service.create(url, qname);
-        RemoteI r = service.getPort(RemoteI.class);
+        GamedataInterface gamedata = service.getPort(GamedataInterface.class);
         
-        System.out.println(r.handshake());
+        System.out.println(gamedata.handshake("soap admin handshake"));
+        System.out.println(gamedata.getWordlist());
+        gamedata.setWordlist();
+        ArrayList wordlist = gamedata.getWordlist();
+        for(Object word : wordlist){
+            System.out.println(word);
+        }
+ 
     }
     
 }

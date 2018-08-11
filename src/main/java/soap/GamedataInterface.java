@@ -5,19 +5,17 @@
  */
 package soap;
 
+import java.util.ArrayList;
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
  *
  * @author s145005
  */
-@WebService(endpointInterface = "soap.RemoteI")
-public class RemoteImpl implements RemoteI {
-
-    @Override
-    public String handshake() {
-        System.out.println("handshake");
-        return "handshake";
-    }
-    
+@WebService
+public interface GamedataInterface {
+    @WebMethod public String handshake(String handshake);
+    @WebMethod public void setWordlist();
+    @WebMethod public ArrayList getWordlist();
 }

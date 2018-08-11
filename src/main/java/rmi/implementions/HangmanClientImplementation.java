@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import soap.RemoteI;
+import soap.GamedataInterface;
 
 /**
  *
@@ -34,19 +34,19 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
     private final List<ClientInterface> clients = new ArrayList<>();
     private Brugeradmin ba;
     private Bruger b;
-    private URL url;
-    private QName qname;
-    private Service service;
-    private RemoteI r;
+    private final URL url;
+    private final QName qname;
+    private final Service service;
+    private final GamedataInterface gamedata;
     
     public HangmanClientImplementation() throws RemoteException, MalformedURLException {
         super();
         
         url = new URL("http://localhost:9092/soap?wsdl");
-        qname = new QName("http://soap/", "RemoteImplService");
+        qname = new QName("http://soap/", "GamedataImplementationService");
         service = Service.create(url, qname);
-        r = service.getPort(RemoteI.class);
-        System.out.println(r.handshake());
+        gamedata = service.getPort(GamedataInterface.class);
+        System.out.println(gamedata.handshake("hangman client handshake"));
     }
 
     @Override
@@ -78,7 +78,11 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
             System.out.println("registered client " + client);
         }
 
-        doCallback(client);
+        try {
+            doCallback(client);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(HangmanClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -91,7 +95,7 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
         }
     }
 
-    public void doCallback(ClientInterface client) throws RemoteException {
+    public void doCallback(ClientInterface client) throws RemoteException, MalformedURLException {
 
         Gamelogic game = new Gamelogic();
        
