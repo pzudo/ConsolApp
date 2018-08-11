@@ -11,8 +11,8 @@ import brugerautorisation.data.Bruger;
 import brugerautorisation.data.Diverse;
 import brugerautorisation.transport.rmi.Brugeradmin;
 import hangman.Gamelogic;
-import static java.lang.System.exit;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.Highscore;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+import soap.RemoteI;
 
 /**
  *
@@ -30,12 +32,21 @@ import rmi.Highscore;
 public class HangmanClientImplementation extends UnicastRemoteObject implements HangmanClientInterface {
 
     private final List<ClientInterface> clients = new ArrayList<>();
-    private final List<Highscore> highscore = new ArrayList<>();
-    Brugeradmin ba;
-    Bruger b;
-
-    public HangmanClientImplementation() throws RemoteException {
+    private Brugeradmin ba;
+    private Bruger b;
+    private URL url;
+    private QName qname;
+    private Service service;
+    private RemoteI r;
+    
+    public HangmanClientImplementation() throws RemoteException, MalformedURLException {
         super();
+        
+        url = new URL("http://localhost:9092/soap?wsdl");
+        qname = new QName("http://soap/", "RemoteImplService");
+        service = Service.create(url, qname);
+        r = service.getPort(RemoteI.class);
+        System.out.println(r.handshake());
     }
 
     @Override
@@ -55,15 +66,15 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
             loginData = "User: " + b + ", " + "Data: " + Diverse.toString(b);
 
         } catch (NotBoundException | MalformedURLException ex) {
-            Logger.getLogger(AdminClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HangmanClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (!(clients.contains(client))) {
             clients.add(client);
-            Object score = ba.getEkstraFelt(username, password, "score");
-            String scoreString = score.toString();
-            Highscore user = new Highscore(username, scoreString);
-            highscore.add(user);
+//            Object score = ba.getEkstraFelt(username, password, "score");
+//            String scoreString = score.toString();
+//            Highscore user = new Highscore(username, scoreString);
+//            highscore.add(user);
             System.out.println("registered client " + client);
         }
 

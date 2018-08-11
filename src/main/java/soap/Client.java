@@ -21,7 +21,7 @@ public class Client {
      * @throws java.net.MalformedURLException
      */
     public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("http://localhost:2512/soap?wsdl");
+        URL url = new URL("http://localhost:9092/soap?wsdl");
         QName qname = new QName("http://soap/", "RemoteImplService");
         Service service = Service.create(url, qname);
         RemoteI r = service.getPort(RemoteI.class);

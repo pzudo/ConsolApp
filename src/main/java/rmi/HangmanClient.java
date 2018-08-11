@@ -39,7 +39,7 @@ public class HangmanClient {
         input = new Scanner(System.in);
 
         client = new ClientImplementation();
-        hang = (HangmanClientInterface) Naming.lookup("rmi://localhost:3097/hangman");
+        hang = (HangmanClientInterface) Naming.lookup("rmi://localhost:9091/hangman");
 
         System.out.println("-------------------- login --------------------");
         System.out.println("type username then enter");

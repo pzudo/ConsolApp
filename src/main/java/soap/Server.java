@@ -20,7 +20,7 @@ public class Server {
         RemoteI r = new RemoteImpl();
         
         System.out.println("publishing");
-        Endpoint.publish("http://[::]:2512/soap", r);
+        Endpoint.publish("http://[::]:9092/soap", r);
         System.out.println("published");
         
     }

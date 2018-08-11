@@ -6,9 +6,9 @@
 package rmi;
 
 import rmi.implementions.HangmanClientImplementation;
-import rmi.implementions.AdminClientImplementation;
+//import rmi.implementions.AdminClientImplementation;
 import rmi.interfaces.HangmanClientInterface;
-import rmi.interfaces.AdminClientInterface;
+//import rmi.interfaces.AdminClientInterface;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -27,15 +27,16 @@ public class Server {
      */
     public static void main(String[] args) throws RemoteException, MalformedURLException {
         
-        LocateRegistry.createRegistry(3097);
+        LocateRegistry.createRegistry(9091);
         
         //Remote object for administration
-        AdminClientInterface serv = new AdminClientImplementation();
-        Naming.rebind("rmi://localhost:3097/admin", serv);
+//        AdminClientInterface serv = new AdminClientImplementation();
+//        Naming.rebind("rmi://localhost:3097/admin", serv);
         
         //Remote object for normal users (hangman game)
         HangmanClientInterface hang = new HangmanClientImplementation();
-        Naming.rebind("rmi://localhost:3097/hangman", hang);
+        Naming.rebind("rmi://localhost:9091/hangman", hang);
+        System.out.println("rmi registry success");
         
         
     }
