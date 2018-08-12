@@ -5,16 +5,24 @@
  */
 package soap;
 
+import brugerautorisation.data.Bruger;
+import brugerautorisation.data.Diverse;
+import brugerautorisation.transport.rmi.Brugeradmin;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
+import rmi.implementions.HangmanClientImplementation;
 
 /**
  *
@@ -25,8 +33,15 @@ public class GamedataImplementation implements GamedataInterface {
 
     private final ArrayList<String> wordlist;
 
+    private Brugeradmin ba;
+    private Bruger b;
+
+    private boolean authenticated;
+
     public GamedataImplementation() {
+        super();
         wordlist = new ArrayList<>();
+        authenticated = false;
     }
 
     public static String fetchUrl(String url) throws IOException {
@@ -66,19 +81,41 @@ public class GamedataImplementation implements GamedataInterface {
     }
 
     @Override
+    public void register(String username, String password) {
+        String loginData = null;
+
+        try {
+            ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+            b = ba.hentBruger(username, password);
+
+            loginData = "User: " + b + ", " + "Data: " + Diverse.toString(b);
+
+            authenticated = true;
+
+        } catch (NotBoundException | MalformedURLException ex) {
+            Logger.getLogger(HangmanClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    @Override
     public String handshake(String handshake) {
         System.out.println(handshake);
-        return "handshake";
+        return "soap server handshake";
     }
 
     @Override
     public void setWordlist() {
-        try {
-            fetchWordsFromDR();
-            System.out.println("word succesfully fetched");
-        } catch (Exception ex) {
-            Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        if (authenticated) {
+            try {
+                fetchWordsFromDR();
+            } catch (Exception ex) {
+                Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        else System.out.println("not authenticated login");
     }
 
     @Override

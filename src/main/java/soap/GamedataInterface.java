@@ -16,6 +16,8 @@ import javax.jws.WebService;
 @WebService
 public interface GamedataInterface {
     @WebMethod public String handshake(String handshake);
+    @WebMethod public void register(String username, String password);
     @WebMethod public void setWordlist();
     @WebMethod public ArrayList getWordlist();
+    
 }

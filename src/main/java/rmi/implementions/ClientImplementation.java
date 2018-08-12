@@ -16,7 +16,7 @@ import java.util.Scanner;
  */
 public class ClientImplementation extends UnicastRemoteObject implements ClientInterface {
 
-    Scanner input = new Scanner(System.in);;
+    Scanner input = new Scanner(System.in);
     
     public ClientImplementation() throws RemoteException {
         super();
