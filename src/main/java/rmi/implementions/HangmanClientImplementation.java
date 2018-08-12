@@ -116,11 +116,11 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
             game.check(letter);
             
             if(game.isCorrect()){
-                client.callback(letter + " Was correct");
+                client.callback(letter + " was correct");
                 client.callback("--------- round " + round + " ---------");
             }
             else {
-                client.callback(letter + " Ss not in the word try again");
+                client.callback(letter + " is not in the word try again");
                 client.callback("--------- round " + round + " ---------");
             }
 
