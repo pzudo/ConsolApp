@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import soap.interfaces.GamedataInterface;
+import soap.GamedataInterface;
 
 public class Gamelogic {
 
@@ -65,7 +65,8 @@ public class Gamelogic {
     }
 
     public void reset() throws MalformedURLException {
-        url = new URL("http://localhost:9092/soap?wsdl");
+        url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
+//        url = new URL("http://localhost:9092/soap?wsdl");
         qname = new QName("http://soap/", "GamedataImplementationService");
         service = Service.create(url, qname);
         gamedata = service.getPort(GamedataInterface.class);

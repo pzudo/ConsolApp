@@ -1,3 +1,5 @@
+package hangman;
+
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -6,8 +8,8 @@ import java.rmi.registry.LocateRegistry;
 import javax.xml.ws.Endpoint;
 import rmi.implementions.HangmanClientImplementation;
 import rmi.interfaces.HangmanClientInterface;
-import soap.implementations.GamedataImplementation;
-import soap.interfaces.GamedataInterface;
+import soap.GamedataImplementation;
+import soap.GamedataInterface;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,7 +35,8 @@ public class Server {
         GamedataInterface gamedata = new GamedataImplementation();
                 
         System.out.println("publishing");
-        Endpoint.publish("http://[::]:9092/soap", gamedata);
+        Endpoint.publish("http://ubuntu4.saluton.dk:9092/soap", gamedata);
+//        Endpoint.publish("http://[::]:9092/soap", gamedata);
         System.out.println("published");
         
         System.out.println("running initial server setup");
@@ -44,7 +47,9 @@ public class Server {
         HangmanClientInterface hang = new HangmanClientImplementation();
         
         LocateRegistry.createRegistry(9091);
+        System.setProperty("java.rmi.server.hostname", "ubuntu4.saluton.dk");
         Naming.rebind("rmi://localhost:9091/hangman", hang);
+//        Naming.rebind("rmi://localhost:9091/hangman", hang);
         System.out.println("rmi registry success");
         
     }

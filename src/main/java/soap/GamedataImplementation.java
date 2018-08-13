@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package soap.implementations;
+package soap;
 
-import soap.interfaces.GamedataInterface;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.data.Diverse;
 import brugerautorisation.transport.rmi.Brugeradmin;
@@ -23,7 +22,6 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
-import soap.Score;
 
 /**
  *
