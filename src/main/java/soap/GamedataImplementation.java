@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
-import rmi.implementions.HangmanClientImplementation;
 
 /**
  *
@@ -32,15 +31,24 @@ import rmi.implementions.HangmanClientImplementation;
 public class GamedataImplementation implements GamedataInterface {
 
     private final ArrayList<String> wordlist;
+    private final ArrayList<Score> highscore;
 
     private Brugeradmin ba;
     private Bruger b;
+
+    Score score;
 
     private boolean authenticated;
 
     public GamedataImplementation() {
         super();
         wordlist = new ArrayList<>();
+        highscore = new ArrayList<>();
+        try {
+            ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
         authenticated = false;
     }
 
@@ -81,19 +89,13 @@ public class GamedataImplementation implements GamedataInterface {
     }
 
     @Override
-    public void register(String username, String password) {
+    public void login(String username, String password) {
         String loginData = null;
 
         try {
-            ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
             b = ba.hentBruger(username, password);
-
             loginData = "User: " + b + ", " + "Data: " + Diverse.toString(b);
-
             authenticated = true;
-
-        } catch (NotBoundException | MalformedURLException ex) {
-            Logger.getLogger(HangmanClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,13 +116,109 @@ public class GamedataImplementation implements GamedataInterface {
             } catch (Exception ex) {
                 Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            System.out.println("not authenticated login");
         }
-        else System.out.println("not authenticated login");
     }
 
     @Override
     public ArrayList getWordlist() {
         return wordlist;
+    }
+
+    @Override
+    public void setScore(String username, String password, int point) {
+        System.out.println("setting score for " + username + " : " + password + " : " + point);
+        try {
+            ba.setEkstraFelt(username, password, "score", point);
+
+            System.out.println("add score");
+            addScore(getScore(username, password));
+
+        } catch (RemoteException ex) {
+            Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public Score getScore(String username, String password) {
+        System.out.println("getting score for " + username + " : " + password);
+        try {
+                Object temp = ba.getEkstraFelt(username, password, "score");
+                int point = (int) temp;
+
+                score = new Score(username, password, point);
+        } catch (RemoteException ex) {
+            Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        System.out.println("return: " + score.getUsername() + " : " + score.getPassword() + " : " + score.getPoint());
+        return score;
+    }
+
+    @Override
+    public void addScore(Score score) {
+        System.out.println("adding score " + score);
+        highscore.add(score);
+    }
+
+//    @Override
+//    public void updateScore(String username, String password, int point) {
+//
+//        System.out.println("trying to update score " + username);
+//
+//        
+//        
+//        for (Score score : highscore) {
+//            String tempUsername = score.getUsername();
+//            System.out.println("update score checking for user " + tempUsername);
+//
+//            if (tempUsername.equals(username)) {
+//                System.out.println("found match " + score.getUsername());
+//
+//                Score tempScore = getScore(score.getUsername(), score.getPassword());
+//
+//                int tempPoint = (tempScore.getPoint() + point);
+//                tempScore.setPoint(tempPoint);
+//
+//                System.out.println(tempScore.getPoint());
+//
+//                System.out.println("trying to remove " + score);
+//                highscore.remove(score);
+//                
+//                System.out.println("trying to add " + tempScore);
+//                setScore(tempScore.getUsername(), tempScore.getPassword(), tempScore.getPoint());
+//
+//            } else {
+//                System.out.println(username + " does not exist on highscorelist");
+//            }
+//
+//        }
+//
+//    }
+
+    @Override
+    public void resetScore(String username, String password) {
+        System.out.println("resetting score for " + username);
+        setScore(username, password, 0);
+    }
+
+    @Override
+    public void updateHighscore(Score score) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList getHighscore() {
+        ArrayList<String> stringHighscore = new ArrayList<>();
+
+        for (Score score : highscore) {
+            String temp = score.getUsername() + " has " + score.getPoint() + " points";
+            System.out.println(temp);
+            stringHighscore.add(temp);
+        }
+
+        return stringHighscore;
     }
 
 }
