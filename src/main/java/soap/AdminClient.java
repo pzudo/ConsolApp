@@ -61,13 +61,13 @@ public class AdminClient {
             System.out.println(score);
         }
         
-        System.out.println("reset score");
-        gamedata.resetScore(user, password);
-        
-        highscore = gamedata.getHighscore();
-        for (String score : highscore) {
-            System.out.println(score);
-        }
+//        System.out.println("reset score");
+//        gamedata.resetScore(user, password);
+//        
+//        highscore = gamedata.getHighscore();
+//        for (String score : highscore) {
+//            System.out.println(score);
+//        }
 
 //        System.out.println(gamedata.getWordlist());
 //        gamedata.setWordlist();

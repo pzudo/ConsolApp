@@ -158,44 +158,17 @@ public class GamedataImplementation implements GamedataInterface {
 
     @Override
     public void addScore(Score score) {
+        for (int i = 0; i < highscore.size(); i++){
+            if (highscore.get(i).getUsername().equals(score.getUsername())){
+                System.out.println("removing old score");
+                highscore.remove(i);
+            }
+                
+        }
+        
         System.out.println("adding score " + score);
         highscore.add(score);
     }
-
-//    @Override
-//    public void updateScore(String username, String password, int point) {
-//
-//        System.out.println("trying to update score " + username);
-//
-//        
-//        
-//        for (Score score : highscore) {
-//            String tempUsername = score.getUsername();
-//            System.out.println("update score checking for user " + tempUsername);
-//
-//            if (tempUsername.equals(username)) {
-//                System.out.println("found match " + score.getUsername());
-//
-//                Score tempScore = getScore(score.getUsername(), score.getPassword());
-//
-//                int tempPoint = (tempScore.getPoint() + point);
-//                tempScore.setPoint(tempPoint);
-//
-//                System.out.println(tempScore.getPoint());
-//
-//                System.out.println("trying to remove " + score);
-//                highscore.remove(score);
-//                
-//                System.out.println("trying to add " + tempScore);
-//                setScore(tempScore.getUsername(), tempScore.getPassword(), tempScore.getPoint());
-//
-//            } else {
-//                System.out.println(username + " does not exist on highscorelist");
-//            }
-//
-//        }
-//
-//    }
 
     @Override
     public void resetScore(String username, String password) {
