@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import soap.GamedataInterface;
+import soap.interfaces.GamedataInterface;
 
 /**
  *
@@ -38,10 +38,13 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
     private final QName qname;
     private final Service service;
     private final GamedataInterface gamedata;
-    
+
+    private String username;
+    private String password;
+
     public HangmanClientImplementation() throws RemoteException, MalformedURLException {
         super();
-        
+
         url = new URL("http://localhost:9092/soap?wsdl");
         qname = new QName("http://soap/", "GamedataImplementationService");
         service = Service.create(url, qname);
@@ -57,13 +60,15 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
 
     @Override
     public void register(String username, String password, ClientInterface client) throws RemoteException {
-        String loginData = null;
+//         String loginData = null;
+         this.username = username;
+         this.password = password;
 
         try {
             ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
             b = ba.hentBruger(username, password);
 
-            loginData = "User: " + b + ", " + "Data: " + Diverse.toString(b);
+//            loginData = "User: " + b + ", " + "Data: " + Diverse.toString(b);
 
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(HangmanClientImplementation.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,10 +76,11 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
 
         if (!(clients.contains(client))) {
             clients.add(client);
-//            Object score = ba.getEkstraFelt(username, password, "score");
-//            String scoreString = score.toString();
-//            Highscore user = new Highscore(username, scoreString);
-//            highscore.add(user);
+            
+            System.out.println("adding user to highscore");
+            gamedata.addScore(gamedata.getScore(username, password));
+            
+
             System.out.println("registered client " + client);
         }
 
@@ -95,51 +101,76 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
         }
     }
 
-    public void doCallback(ClientInterface client) throws RemoteException, MalformedURLException {
+    public void doCallback(ClientInterface client) throws MalformedURLException, RemoteException {
 
         Gamelogic game = new Gamelogic();
-       
+
         client.callback("\nNEW GAME");
         game.reset();
         System.out.println("word is: " + game.getWord());
-        
+
         int round = 0;
-        
+
         while (!game.isGameover()) {
             round = round + 1;
             client.callback("\n--------- round " + round + " ---------");
             client.callback("Your nummer of wrongs is: " + game.getWrongs());
             client.callback("The current visible word is: " + game.getVisible());
             client.callback("Used letters: " + game.getUsedLetters());
-            
+
             String letter = client.input("Guess a letter: ");
             game.check(letter);
-            
-            if(game.isCorrect()){
+
+            if (game.isCorrect()) {
                 client.callback(letter + " was correct");
                 client.callback("--------- round " + round + " ---------");
-            }
-            else {
+            } else {
                 client.callback(letter + " is not in the word try again");
                 client.callback("--------- round " + round + " ---------");
             }
 
-            if (game.isGameover()){
-                if(game.isWon()){
+            if (game.isGameover()) {
+                if (game.isWon()) {
                     client.callback("GRATZ YOU WON");
-                }
-                else{
+                    client.callback("You guessed the word " + game.getVisible());
+
+                    int point = game.getWord().length() - game.getWrongs();
+                    client.callback("You scored " + point + " point");
+                    gamedata.updateScore(username, password, point);
+                    
+                    alertAll();
+                } else {
                     client.callback("YOU LOST BETTER LUCK NEXT TIME");
+                    client.callback("the word was " + game.getWord());
+
+                    int point = 0 - game.getWrongs();
+                    client.callback("You scored " + point + " point");
+                    gamedata.updateScore(username, password, point);
+                    
+                    alertAll();
                 }
             }
         }
-        
+
         String choice = client.input("\nDo you want to play a new game (y/n)");
-        if("y".equals(choice)){
+        if ("y".equals(choice)) {
             doCallback(client);
-        }
-        else {
+        } else {
             client.callback("\nGoodbye");
+        }
+
+    }
+
+    public void alertAll() throws RemoteException {
+        for (ClientInterface client : clients) {
+            updateHighscore(client);
+        }
+    }
+
+    private void updateHighscore(ClientInterface client) throws RemoteException {
+        ArrayList<String> highscore = gamedata.getHighscore();
+        for (String score : highscore) {
+            client.callback(score);
         }
     }
 }

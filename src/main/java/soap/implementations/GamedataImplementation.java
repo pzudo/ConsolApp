@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package soap;
+package soap.implementations;
 
+import soap.interfaces.GamedataInterface;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.data.Diverse;
 import brugerautorisation.transport.rmi.Brugeradmin;
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
+import soap.Score;
 
 /**
  *
@@ -110,15 +112,12 @@ public class GamedataImplementation implements GamedataInterface {
 
     @Override
     public void setWordlist() {
-        if (authenticated) {
+        
             try {
                 fetchWordsFromDR();
             } catch (Exception ex) {
                 Logger.getLogger(GamedataImplementation.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            System.out.println("not authenticated login");
-        }
     }
 
     @Override

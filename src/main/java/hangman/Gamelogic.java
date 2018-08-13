@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import soap.GamedataInterface;
+import soap.interfaces.GamedataInterface;
 
 public class Gamelogic {
 

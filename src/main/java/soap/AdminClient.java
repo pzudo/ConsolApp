@@ -5,6 +5,7 @@
  */
 package soap;
 
+import soap.interfaces.GamedataInterface;
 import static java.lang.System.exit;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,38 +44,38 @@ public class AdminClient {
 //        password = input.nextLine();
         gamedata.login(user, password);
 
-        gamedata.addScore(gamedata.getScore(user, password));
-
-        for (int i = 0; i < 10; i++) {
-            System.out.println("initial score");
-
-            highscore = gamedata.getHighscore();
-            for (String score : highscore) {
-                System.out.println(score);
-            }
-
-            System.out.println("update score");
-            gamedata.updateScore(user, password, 1);
-
-            highscore = gamedata.getHighscore();
-            for (String score : highscore) {
-                System.out.println(score);
-            }
-        }
-
+//        gamedata.addScore(gamedata.getScore(user, password));
+//
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println("initial score");
+//
+//            highscore = gamedata.getHighscore();
+//            for (String score : highscore) {
+//                System.out.println(score);
+//            }
+//
+//            System.out.println("update score");
+//            gamedata.updateScore(user, password, 1);
+//
+//            highscore = gamedata.getHighscore();
+//            for (String score : highscore) {
+//                System.out.println(score);
+//            }
+//        }
+//
 //        System.out.println("reset score");
 //        gamedata.resetScore(user, password);
-//        
-//        highscore = gamedata.getHighscore();
-//        for (String score : highscore) {
-//            System.out.println(score);
-//        }
-//        System.out.println(gamedata.getWordlist());
-//        gamedata.setWordlist();
-//        ArrayList wordlist = gamedata.getWordlist();
-//        for (Object word : wordlist) {
-//            System.out.println(word);
-//        }
+        
+        highscore = gamedata.getHighscore();
+        for (String score : highscore) {
+            System.out.println(score);
+        }
+        System.out.println(gamedata.getWordlist());
+        gamedata.setWordlist();
+        ArrayList wordlist = gamedata.getWordlist();
+        for (Object word : wordlist) {
+            System.out.println(word);
+        }
         input.close();
         exit(0);
     }
