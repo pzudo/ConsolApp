@@ -45,22 +45,23 @@ public class AdminClient {
 
         gamedata.addScore(gamedata.getScore(user, password));
 
+        for (int i = 0; i < 10; i++) {
+            System.out.println("initial score");
 
-        System.out.println("initial score");
-        
-        highscore = gamedata.getHighscore();
-        for (String score : highscore) {
-            System.out.println(score);
-        }
-        
-        System.out.println("update score");
-        gamedata.setScore(user, password, 1);
+            highscore = gamedata.getHighscore();
+            for (String score : highscore) {
+                System.out.println(score);
+            }
 
-        highscore = gamedata.getHighscore();
-        for (String score : highscore) {
-            System.out.println(score);
+            System.out.println("update score");
+            gamedata.updateScore(user, password, 1);
+
+            highscore = gamedata.getHighscore();
+            for (String score : highscore) {
+                System.out.println(score);
+            }
         }
-        
+
 //        System.out.println("reset score");
 //        gamedata.resetScore(user, password);
 //        
@@ -68,14 +69,12 @@ public class AdminClient {
 //        for (String score : highscore) {
 //            System.out.println(score);
 //        }
-
 //        System.out.println(gamedata.getWordlist());
 //        gamedata.setWordlist();
 //        ArrayList wordlist = gamedata.getWordlist();
 //        for (Object word : wordlist) {
 //            System.out.println(word);
 //        }
-
         input.close();
         exit(0);
     }

@@ -171,6 +171,12 @@ public class GamedataImplementation implements GamedataInterface {
     }
 
     @Override
+    public void updateScore(String username, String password, int point) {
+        int temp = getScore(username, password).getPoint();
+        setScore(username, password, (temp + point));
+    }
+    
+    @Override
     public void resetScore(String username, String password) {
         System.out.println("resetting score for " + username);
         setScore(username, password, 0);
@@ -193,5 +199,7 @@ public class GamedataImplementation implements GamedataInterface {
 
         return stringHighscore;
     }
+
+    
 
 }

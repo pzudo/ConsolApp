@@ -23,7 +23,7 @@ public interface GamedataInterface {
     @WebMethod public void setScore(String username, String password, int point);
     @WebMethod public Score getScore(String username, String password);
     @WebMethod public void addScore(Score score);
-//    @WebMethod public void updateScore(String username, String password, int point);
+    @WebMethod public void updateScore(String username, String password, int point);
     @WebMethod public void resetScore(String username, String password);
     @WebMethod public void updateHighscore(Score score);
     @WebMethod public ArrayList getHighscore();
