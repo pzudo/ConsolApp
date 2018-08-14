@@ -20,7 +20,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>hangman.Server</mainClass>
+                            <mainClass>server.Hangman</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
