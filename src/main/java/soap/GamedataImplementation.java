@@ -180,11 +180,6 @@ public class GamedataImplementation implements GamedataInterface {
     }
 
     @Override
-    public void updateHighscore(Score score) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public ArrayList getHighscore() {
         ArrayList<String> stringHighscore = new ArrayList<>();
 

@@ -65,7 +65,8 @@ public class Gamelogic {
     }
 
     public void reset() throws MalformedURLException {
-        url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
+        url = new URL("http://46.101.82.206:9092/soap?wsdl");
+//        url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
 //        url = new URL("http://localhost:9092/soap?wsdl");
         qname = new QName("http://soap/", "GamedataImplementationService");
         service = Service.create(url, qname);

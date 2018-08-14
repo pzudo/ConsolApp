@@ -25,7 +25,8 @@ public class Server {
 
     
     
-    /**
+    /** publishes soap serverprogram and runs and initial setup of data
+     * registers the rmi remote registry
      * @param args the command line arguments
      */
     public static void main(String[] args) throws RemoteException, MalformedURLException {
@@ -35,7 +36,8 @@ public class Server {
         GamedataInterface gamedata = new GamedataImplementation();
                 
         System.out.println("publishing");
-        Endpoint.publish("http://ubuntu4.saluton.dk:9092/soap", gamedata);
+        Endpoint.publish("http://46.101.82.206:9092/soap", gamedata);
+//        Endpoint.publish("http://ubuntu4.saluton.dk:9092/soap", gamedata);
 //        Endpoint.publish("http://[::]:9092/soap", gamedata);
         System.out.println("published");
         
@@ -47,8 +49,9 @@ public class Server {
         HangmanClientInterface hang = new HangmanClientImplementation();
         
         LocateRegistry.createRegistry(9091);
-        System.setProperty("java.rmi.server.hostname", "ubuntu4.saluton.dk");
-        Naming.rebind("rmi://localhost:9091/hangman", hang);
+        System.setProperty("java.rmi.server.hostname", "46.101.82.206");
+//        System.setProperty("java.rmi.server.hostname", "ubuntu4.saluton.dk");
+        Naming.rebind("rmi://46.101.82.206:9091/hangman", hang);
 //        Naming.rebind("rmi://localhost:9091/hangman", hang);
         System.out.println("rmi registry success");
         

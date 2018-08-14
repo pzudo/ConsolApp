@@ -10,8 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-/**
- *
+/** ClientImplementation
+ * this class implements the remote ClientInterface
  * @author s145005
  */
 public class ClientImplementation extends UnicastRemoteObject implements ClientInterface {

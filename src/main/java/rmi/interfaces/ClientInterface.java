@@ -14,18 +14,20 @@ import java.rmi.RemoteException;
  */
 public interface ClientInterface extends Remote {
 
-    /**
-     *
-     * @param response
-     * @return
-     * @throws RemoteException
+    /** callback
+     * this method is used by the serverprogram 
+     * sends messages to a client
+     * @param response String message from serverprogram
+     * @return String acknowledgment of response
+     * @throws java.rmi.RemoteException
      */
     public String callback(String response) throws RemoteException;
 
-    /**
-     *
-     * @param request
-     * @return
+    /** input
+     * this method is used by the serverprogram
+     * requests a input from client (Scanner)
+     * @param request String to the user showing the needed input
+     * @return String with the Scanner input to the server 
      * @throws RemoteException
      */
     public String input(String request) throws RemoteException;

@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import soap.GamedataInterface;
 
-/**
- *
+/** HangmanClientInteface
+ * this class implements the remote HangmanClientInterface
  * @author s145005
  */
 public class HangmanClientImplementation extends UnicastRemoteObject implements HangmanClientInterface {
@@ -44,7 +44,8 @@ public class HangmanClientImplementation extends UnicastRemoteObject implements 
 
     public HangmanClientImplementation() throws RemoteException, MalformedURLException {
         super();
-        url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
+        url = new URL("http://46.101.82.206:9092/soap?wsdl");
+//        url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
 //        url = new URL("http://localhost:9092/soap?wsdl");
         qname = new QName("http://soap/", "GamedataImplementationService");
         service = Service.create(url, qname);

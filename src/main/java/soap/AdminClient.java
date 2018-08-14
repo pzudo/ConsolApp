@@ -33,7 +33,8 @@ public class AdminClient {
      * @throws java.net.MalformedURLException
      */
     public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
+        URL url = new URL("http://46.101.82.206:9092/soap?wsdl");
+//        URL url = new URL("http://ubuntu4.saluton.dk:9092/soap?wsdl");
 //        URL url = new URL("http://localhost:9092/soap?wsdl");
         QName qname = new QName("http://soap/", "GamedataImplementationService");
         Service service = Service.create(url, qname);
